@@ -19,46 +19,6 @@ import { formatJalali, faPrice } from '@/lib/persian'
 
 const specIcons: Record<string, any> = { HeartPulse, Sparkles, Apple, Brain, Smile, Baby, Bone, Eye }
 
-/* ---------- hero motion-graphics particles (deterministic, SSR-safe) ---------- */
-const HERO_PARTICLES = [
-  { x: 4, y: 78, s: 6, d: 16, delay: 0 }, { x: 11, y: 62, s: 4, d: 13, delay: 2.2 },
-  { x: 18, y: 88, s: 5, d: 18, delay: 1.1 }, { x: 26, y: 70, s: 3, d: 12, delay: 3.4 },
-  { x: 34, y: 84, s: 6, d: 17, delay: 0.6 }, { x: 43, y: 58, s: 4, d: 14, delay: 2.8 },
-  { x: 52, y: 92, s: 5, d: 15, delay: 1.7 }, { x: 61, y: 66, s: 3, d: 12, delay: 4.1 },
-  { x: 70, y: 80, s: 6, d: 19, delay: 0.3 }, { x: 78, y: 60, s: 4, d: 13, delay: 3.1 },
-  { x: 86, y: 74, s: 5, d: 16, delay: 1.4 }, { x: 93, y: 86, s: 4, d: 14, delay: 2.5 },
-  { x: 8, y: 40, s: 3, d: 15, delay: 3.8 }, { x: 96, y: 44, s: 3, d: 17, delay: 0.9 },
-]
-
-function HeroParticles() {
-  return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden>
-      {HERO_PARTICLES.map((p, i) => (
-        <motion.span
-          key={i}
-          className="absolute rounded-full bg-primary/60 blur-[1px]"
-          style={{ left: `${p.x}%`, top: `${p.y}%`, width: p.s, height: p.s }}
-          animate={{ y: [0, -160], opacity: [0, 0.85, 0], scale: [1, 1.4, 0.8] }}
-          transition={{ duration: p.d, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      ))}
-    </div>
-  )
-}
-
-/** cinematic light sweep across hero */
-function LightSweep() {
-  return (
-    <motion.div
-      aria-hidden
-      className="absolute inset-y-0 -right-1/3 w-1/3 pointer-events-none"
-      style={{ background: 'linear-gradient(100deg, transparent 0%, rgba(255,255,255,0.07) 45%, rgba(56,189,248,0.10) 55%, transparent 100%)', transform: 'skewX(-14deg)' }}
-      animate={{ x: ['0%', '420%'] }}
-      transition={{ duration: 10, repeat: Infinity, ease: 'linear', repeatDelay: 3 }}
-    />
-  )
-}
-
 export function Landing({ onLogout }: { onLogout: () => void }) {
   return (
     <>
@@ -85,7 +45,7 @@ function Hero() {
 
   return (
     <section className="relative min-h-[100dvh] flex items-center overflow-hidden pt-24 pb-16" aria-label="معرفی نوبت‌یار">
-      {/* ===== cinematic background: AI image + Ken Burns + parallax ===== */}
+      {/* ===== suitable cinematic background image + subtle motion ===== */}
       <motion.div style={{ y: bgY }} className="absolute inset-0" aria-hidden>
         <motion.div
           className="absolute inset-0"
@@ -101,9 +61,6 @@ function Hero() {
         <div className="absolute inset-0 bg-grid" />
       </motion.div>
 
-      {/* ===== motion graphics layers ===== */}
-      <HeroParticles />
-      <LightSweep />
       <Orb variant="a" className="w-[520px] h-[520px] bg-primary/25 -top-32 -left-32" />
       <Orb variant="b" className="w-[460px] h-[460px] bg-accent/15 top-1/3 -right-40" />
       <Orb variant="a" className="w-[300px] h-[300px] bg-chart-4/10 bottom-0 left-1/3" />
@@ -183,80 +140,61 @@ function Hero() {
           </motion.div>
         </div>
 
-        {/* cinematic visual — doctor photo + floating appointment card */}
-        <motion.div style={{ y: yVisual }} className="relative hidden lg:block gpu pb-12">
-          {/* rotating conic glow */}
+        {/* cinematic visual — appointment card (previous design) */}
+        <motion.div style={{ y: yVisual }} className="relative hidden lg:block gpu">
           <motion.div
-            aria-hidden
-            className="absolute -inset-8 rounded-[3rem] blur-3xl opacity-45"
-            style={{ background: 'conic-gradient(from 0deg, transparent 0%, rgba(8,145,178,0.55) 18%, transparent 38%, transparent 58%, rgba(22,163,74,0.4) 78%, transparent 100%)' }}
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 22, ease: 'linear' }}
-          />
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92, rotate: 3 }}
+            initial={{ opacity: 0, scale: 0.9, rotate: 4 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ delay: 0.4, duration: 1, ease: [0.21, 0.47, 0.32, 0.98] }}
             className="relative"
           >
-            {/* doctor photo card */}
             <TiltCard>
-              <div className="relative rounded-[2rem] overflow-hidden border-2 border-primary/20 shadow-2xl shadow-primary/20">
-                <Image
-                  src="/images/hero-doctor.webp"
-                  alt="پزشک متخصص نوبت‌یار آماده پاسخگویی"
-                  width={768}
-                  height={1344}
-                  priority
-                  className="w-full h-[500px] object-cover object-top"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/10 to-transparent" />
-
-                {/* doctor identity strip */}
-                <div className="absolute bottom-4 inset-x-4 glass border rounded-2xl px-4 py-3 flex items-center gap-3">
-                  <span className="grid place-items-center size-11 rounded-xl bg-primary text-primary-foreground shrink-0">
-                    <HeartPulse className="size-6" strokeWidth={1.8} />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="font-extrabold text-sm flex items-center gap-1.5">
-                      دکتر سارا محمدی <BadgeCheck className="size-4 text-primary shrink-0" />
+              <Card className="border-2 shadow-2xl shadow-primary/10 overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="bg-gradient-to-l from-primary/10 via-transparent to-accent/10 p-6">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="size-14 ring-4 ring-primary/20">
+                        <AvatarImage src="/images/doctor-sara.webp" alt="دکتر سارا محمدی" />
+                        <AvatarFallback className="bg-primary text-primary-foreground text-xl font-black">س</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="font-extrabold text-lg flex items-center gap-1.5">
+                          دکتر سارا محمدی <BadgeCheck className="size-5 text-primary" />
+                        </div>
+                        <div className="text-sm text-muted-foreground">متخصص قلب و عروق — ۱۵ سال سابقه</div>
+                      </div>
                     </div>
-                    <div className="text-xs text-muted-foreground truncate">متخصص قلب و عروق — ۱۵ سال سابقه</div>
+                    <EcgLine className="w-full text-primary/70 mt-5 h-14" />
                   </div>
-                  <span className="mr-auto flex items-center gap-1 text-xs font-bold text-accent shrink-0">
-                    <span className="size-2 rounded-full bg-accent animate-pulse" /> آماده ویزیت
-                  </span>
-                </div>
-              </div>
+                  <div className="p-6 pt-4 space-y-3">
+                    {[
+                      { time: '۱۰:۰۰', name: 'امیر تهرانی', type: 'ویزیت حضوری', status: 'تأیید شده' },
+                      { time: '۱۱:۳۰', name: 'نگار صادقی', type: 'ویزیت آنلاین', status: 'در انتظار' },
+                      { time: '۱۴:۰۰', name: 'رضا کریمی', type: 'ویزیت حضوری', status: 'تأیید شده' },
+                    ].map((row, i) => (
+                      <motion.div
+                        key={row.time}
+                        initial={{ opacity: 0, x: 40 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.9 + i * 0.18, duration: 0.55 }}
+                        className="flex items-center justify-between rounded-xl border p-3.5 bg-card hover:border-primary/40 transition-colors"
+                      >
+                        <span className="font-black text-primary text-lg w-14 text-center">{row.time}</span>
+                        <span className="font-semibold text-sm flex-1 mr-3">{row.name}</span>
+                        <Badge variant="secondary" className="text-[11px]">{row.type}</Badge>
+                        <Badge variant={row.status === 'تأیید شده' ? 'default' : 'secondary'} className={`text-[11px] mr-2 ${row.status === 'تأیید شده' ? 'bg-accent/15 text-accent hover:bg-accent/15' : ''}`}>
+                          {row.status}
+                        </Badge>
+                      </motion.div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </TiltCard>
-
-            {/* floating appointment mini-card */}
-            <motion.div
-              className="absolute -bottom-2 -right-8 w-72 glass border rounded-2xl p-3.5 shadow-2xl space-y-2"
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: [0, -8, 0] }}
-              transition={{ opacity: { delay: 1.1 }, y: { repeat: Infinity, duration: 5, ease: 'easeInOut' } }}
-            >
-              <div className="text-[11px] font-bold text-muted-foreground flex items-center justify-between">
-                نوبت‌های امروز <span className="text-primary">۳ ویزیت</span>
-              </div>
-              {[
-                { time: '۱۰:۰۰', name: 'امیر تهرانی', type: 'حضوری', ok: true },
-                { time: '۱۱:۳۰', name: 'نگار صادقی', type: 'آنلاین', ok: false },
-              ].map((row) => (
-                <div key={row.time} className="flex items-center gap-2.5 rounded-xl border bg-card/90 px-3 py-2">
-                  <span className="font-black text-primary text-sm w-11 text-center">{row.time}</span>
-                  <span className="font-semibold text-xs flex-1 truncate">{row.name}</span>
-                  <Badge variant="secondary" className="text-[10px] px-1.5">{row.type}</Badge>
-                  <span className={`size-1.5 rounded-full shrink-0 ${row.ok ? 'bg-accent' : 'bg-amber-400 animate-pulse'}`} />
-                </div>
-              ))}
-            </motion.div>
 
             {/* floating chips */}
             <motion.div
-              className="absolute -top-4 -left-6 glass border rounded-2xl px-4 py-3 shadow-xl flex items-center gap-2.5"
+              className="absolute -top-6 -left-8 glass border rounded-2xl px-4 py-3 shadow-xl flex items-center gap-2.5"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: [0, -10, 0] }}
               transition={{ opacity: { delay: 1.2 }, y: { repeat: Infinity, duration: 4, ease: 'easeInOut' } }}
@@ -266,10 +204,10 @@ function Hero() {
             </motion.div>
 
             <motion.div
-              className="absolute top-1/2 -left-12 glass border rounded-2xl px-4 py-3 shadow-xl flex items-center gap-2.5"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: [0, 8, 0] }}
-              transition={{ opacity: { delay: 1.35 }, x: { repeat: Infinity, duration: 4.5, ease: 'easeInOut' } }}
+              className="absolute -bottom-7 -right-6 glass border rounded-2xl px-4 py-3 shadow-xl flex items-center gap-2.5"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: [0, 10, 0] }}
+              transition={{ opacity: { delay: 1.35 }, y: { repeat: Infinity, duration: 4.5, ease: 'easeInOut' } }}
             >
               <span className="grid place-items-center size-9 rounded-xl bg-primary/15 text-primary"><Star className="size-5 fill-current" /></span>
               <div className="text-xs"><div className="font-bold">۴.۹ از ۵</div><div className="text-muted-foreground">رضایت ۱۲هزار بیمار</div></div>
