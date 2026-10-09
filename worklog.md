@@ -30,3 +30,26 @@ Stage Summary:
 - سرویس realtime روی 3003 با لاگ سالم؛ دیتابیس روی db/custom.db
 - اکانت‌های دمو: patient@demo.ir / doctor@demo.ir / secretary@demo.ir / admin@demo.ir — رمز 123456
 - lint پاک (0 error)، همه endpoint ها 200، جریان رزرو+پرداخت end-to-end تست‌شده
+
+---
+Task ID: 2
+Agent: Super Z (main)
+Task: افزودن تصاویر، هیرو سینمایی با موشن‌گرافی و push به GitHub
+
+Work Log:
+- تولید ۱۵ تصویر AI (hero-bg، hero-doctor، ۴ پرتره پزشک، ۵ کاور بلاگ، ۳ آواتار بیمار، online-visit) با z-ai SDK + تبدیل به webp بهینه با sharp (مجموع ۱.۴MB)
+- خطای سایز 1440x720 در API (مضرب ۳۲ نیست) → رفع با 1440x704 از طریق SDK
+- بازطراحی هیرو: بگراند تصویری با Ken Burns zoom + پارالاکس اسکرول، ۱۴ پارتیکل شناور deterministic (SSR-safe)، LightSweep افقی، حلقه conic چرخان، کارت عکس پزشک با نوار هویت شیشه‌ای + کارت نوبت شناور + چیپ‌های شناور
+- TopDoctors: کارت‌های عکس‌دار با هدر تصویری، بج امتیاز و تأیید
+- OnlineVisitFeature: عکس تلمدیسین + ECG روی تصویر + چیپ آواتارهای واقعی بیماران
+- Testimonials: آواتار عکس‌دار بیماران
+- BlogCover: پشتیبانی از کاور تصویری (Image fill) + fallback گرادیانی
+- seed.ts: avatar برای ۷ کاربر، cover تصویری برای ۵ مقاله → db push --force-reset + reseed
+- AvatarImage به booking-wizard، chat-panel (لیست+هدر)، patient-panel اضافه شد
+- تست agent-browser: ۱۶ عکس لود شده، ۰ pending/failed، ۰ خطای کنسول
+- .gitignore تکمیل (imgtmp/shot-*/tool-results)، .env.example ساخته شد
+- Commit 8994ffe و push موفق به https://github.com/vahidaskari1365/nobat (main)
+
+Stage Summary:
+- سایت با تصاویر کامل و هیرو سینمایی روی GitHub منتشر شد
+- توکن در .git/config ذخیره شده (remote origin) — توصیه به چرخش توکن پس از استفاده
