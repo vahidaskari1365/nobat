@@ -312,10 +312,18 @@ function HowItWorks() {
 }
 
 /* ============ TOP DOCTORS ============ */
+/** نمایش فال‌بک (مطابق seed) تا کارت‌ها همیشه رندر شوند — حتی اگر API موقتاً در دسترس نباشد (مثلاً cold-start سرورلس) */
+const FALLBACK_DOCTORS = [
+  { id: 'fb-sara', name: 'دکتر سارا محمدی', avatar: '/images/doctor-sara.webp', specialty: 'قلب و عروق', experience: 15, price: 450000, onlinePrice: 350000, rating: 4.9, reviewsCount: 5 },
+  { id: 'fb-ali', name: 'دکتر علی رضایی', avatar: '/images/doctor-ali.webp', specialty: 'پوست و مو', experience: 12, price: 400000, onlinePrice: 300000, rating: 4.8, reviewsCount: 4 },
+  { id: 'fb-maryam', name: 'دکتر مریم حسینی', avatar: '/images/doctor-maryam.webp', specialty: 'تغذیه و رژیم‌درمانی', experience: 8, price: 280000, onlinePrice: 200000, rating: 4.8, reviewsCount: 3 },
+  { id: 'fb-hossein', name: 'دکتر حسین کریمی', avatar: '/images/doctor-hossein.webp', specialty: 'اعصاب و روان', experience: 18, price: 500000, onlinePrice: 400000, rating: 4.7, reviewsCount: 3 },
+]
+
 function TopDoctors() {
-  const [doctors, setDoctors] = useState<any[]>([])
+  const [doctors, setDoctors] = useState<any[]>(FALLBACK_DOCTORS)
   const { goBooking } = useApp()
-  useEffect(() => { api('/api/doctors').then((r) => setDoctors((r.doctors ?? []).slice(0, 4))).catch(() => {}) }, [])
+  useEffect(() => { api('/api/doctors').then((r) => { const list = (r.doctors ?? []).slice(0, 4); if (list.length) setDoctors(list) }).catch(() => {}) }, [])
 
   return (
     <section className="py-16 md:py-24" aria-label="پزشکان برتر">

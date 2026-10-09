@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  /* Ship the seeded SQLite demo DB inside every serverless bundle (needed on Vercel) */
+  outputFileTracingIncludes: {
+    "/**": ["./db/custom.db"],
+  },
   typescript: {
     ignoreBuildErrors: true,
   },
