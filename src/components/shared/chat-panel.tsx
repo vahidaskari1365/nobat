@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, Loader2, MessageCircle, Search } from 'lucide-react'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -104,7 +104,7 @@ export function ChatPanel({ user }: { user: any }) {
             return (
               <button key={c.id} onClick={() => openConv(c.id)}
                 className={cn('w-full text-right flex items-center gap-3 p-3.5 hover:bg-primary/5 transition-colors border-b last:border-0', active?.id === c.id && 'bg-primary/10')}>
-                <Avatar className="size-10"><AvatarFallback className="bg-primary/10 text-primary font-bold">{o?.name?.[0]}</AvatarFallback></Avatar>
+                <Avatar className="size-10">{o?.avatar && <AvatarImage src={o.avatar} alt={o?.name ?? ""} />}<AvatarFallback className="bg-primary/10 text-primary font-bold">{o?.name?.[0]}</AvatarFallback></Avatar>
                 <div className="min-w-0 flex-1">
                   <div className="font-bold text-sm truncate">{o?.name}</div>
                   <div className="text-xs text-muted-foreground truncate">{last?.content ?? 'شروع گفتگو…'}</div>
@@ -129,7 +129,7 @@ export function ChatPanel({ user }: { user: any }) {
         ) : (
           <>
             <div className="flex items-center gap-3 p-3.5 border-b bg-muted/30">
-              <Avatar className="size-9"><AvatarFallback className="bg-primary/10 text-primary font-bold">{other(active)?.name?.[0]}</AvatarFallback></Avatar>
+              <Avatar className="size-9">{other(active)?.avatar && <AvatarImage src={other(active).avatar} alt={other(active)?.name ?? ""} />}<AvatarFallback className="bg-primary/10 text-primary font-bold">{other(active)?.name?.[0]}</AvatarFallback></Avatar>
               <div>
                 <div className="font-bold text-sm">{other(active)?.name}</div>
                 <Badge variant="secondary" className="text-[10px]">{user.role === 'PATIENT' ? other(active)?.doctorProfile?.specialty?.name || 'پزشک' : 'بیمار'}</Badge>

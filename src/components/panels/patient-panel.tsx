@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Textarea } from '@/components/ui/textarea'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -143,6 +143,7 @@ export function AppointmentRow({ a, role, onCancel, onPay, onVisit, onComplete, 
       <div className={cn('rounded-2xl border bg-card p-5 hover:border-primary/40 hover:shadow-md transition-all')}>
         <div className="flex flex-wrap items-center gap-4">
           <Avatar className="size-12 ring-2 ring-primary/10">
+            {(role === 'PATIENT' ? doctor?.avatar : patient?.avatar) && <AvatarImage src={(role === 'PATIENT' ? doctor?.avatar : patient?.avatar) as string} alt={(role === 'PATIENT' ? doctor?.name : patient?.name) ?? ''} />}
             <AvatarFallback className="bg-primary/10 text-primary font-black">{(role === 'PATIENT' ? doctor?.name : patient?.name)?.[0]}</AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">

@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { useApp } from '@/lib/store'
 import { api } from '@/components/shared/api'
@@ -107,7 +107,7 @@ export function BookingWizard({ prefDoctorId }: { prefDoctorId?: string }) {
                     <Card key={d.id} className={cn('border transition-all hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 gpu', doctor?.id === d.id && 'border-primary ring-2 ring-primary/20')}>
                       <CardContent className="p-5">
                         <div className="flex items-center gap-3 mb-3">
-                          <Avatar className="size-12 ring-2 ring-primary/15"><AvatarFallback className="bg-primary/10 text-primary font-black">{d.name[0]}</AvatarFallback></Avatar>
+                          <Avatar className="size-12 ring-2 ring-primary/15">{d.avatar && <AvatarImage src={d.avatar} alt={d.name} />}<AvatarFallback className="bg-primary/10 text-primary font-black">{d.name[0]}</AvatarFallback></Avatar>
                           <div className="min-w-0">
                             <div className="font-bold truncate">{d.name}</div>
                             <div className="text-xs text-primary font-semibold">{d.specialty}</div>

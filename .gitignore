@@ -52,3 +52,10 @@ prompt
 server.log
 # Skills directory
 /skills/
+# AI generation temp + test screenshots + tool cache
+scripts/imgtmp/
+scripts/shot-*.png
+verify-*.png
+tool-results/
+agent-ctx/
+nohup.out

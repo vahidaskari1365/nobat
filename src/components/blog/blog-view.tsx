@@ -65,7 +65,7 @@ export function BlogView() {
                 <motion.article whileHover={{ y: -6 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
                   <button onClick={() => setView({ type: 'blog-post', slug: p.slug })} className="text-right w-full">
                     <Card className="h-full overflow-hidden border hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 transition-all">
-                      <BlogCover cover={p.cover} category={p.category} />
+                      <BlogCover cover={p.cover} category={p.category} title={p.title} />
                       <CardContent className="p-5">
                         <h2 className="font-extrabold leading-snug line-clamp-2 min-h-14">{p.title}</h2>
                         <p className="text-sm text-muted-foreground leading-relaxed mt-2 line-clamp-3">{p.excerpt}</p>
@@ -117,7 +117,7 @@ export function BlogPostView({ slug }: { slug: string }) {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
           <div className="rounded-3xl overflow-hidden mb-8 relative">
-            <BlogCover cover={post.cover} />
+            <BlogCover cover={post.cover} title={post.title} />
             <h1 className="absolute bottom-0 inset-x-0 p-8 text-2xl md:text-4xl font-black text-white leading-tight" itemProp="headline">
               {post.title}
             </h1>
